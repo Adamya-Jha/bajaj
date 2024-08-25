@@ -4,35 +4,19 @@ const { Schema } = mongoose;
 // Define the schema
 const responseSchema = new Schema({
     data: {
-        numbers: {
-            type: [String], // Array of strings
-            validate: {
-                validator: function (array) {
-                    // Validate that the array contains only numeric strings
-                    return array.every(item => /^\d+$/.test(item));
-                },
-                message: props => `Numbers array contains non-numeric elements.`
-            }
-        },
-        alphabets: {
-            type: [String], // Array of strings
-            validate: {
-                validator: function (array) {
-                    // Validate that the array contains only letters
-                    return array.every(item => /^[a-zA-Z]+$/.test(item));
-                },
-                message: props => `Alphabets array contains non-letter elements.`
-            }
-        },
-        highest_lowercase_alphabet: {
-            type: [String], // Array of strings
-            validate: {
-                validator: function (array) {
-                    // Validate that the array contains only lowercase letters
-                    return array.every(item => /^[a-z]+$/.test(item));
-                },
-                message: props => `Highest lowercase alphabet array contains non-lowercase elements.`
-            }
+        type: String, // Store as a string
+        validate: {
+            validator: function (value) {
+                try {
+                    // Parse the string into an array
+                    const array = JSON.parse(value);
+                    // Validate that the parsed array contains only letters and numbers
+                    return Array.isArray(array) && array.every(item => /^[a-zA-Z0-9]+$/.test(item));
+                } catch (error) {
+                    return false; // Parsing failed, so it's invalid
+                }
+            },
+            message: props => `Data field must be a valid JSON array with letters and numbers.`
         }
     }
 });

@@ -12,27 +12,28 @@ export default function Home() {
     setError('');
 
     try {
-      // Validate JSON input
-      const parsedInput = JSON.parse(jsonInput);
 
+      const parsedInput = JSON.parse(jsonInput);
       // Call your REST API using fetch
       const res = await fetch(`/api/user`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(parsedInput),
+        body: JSON.stringify({ data: parsedInput }), // Correct body format
       });
 
       if (!res.ok) {
-        throw new Error('Network response was not ok');
+        const errorData = await res.json();
+        setError(errorData.error || 'An error occurred');
+        return;
       }
 
       const data = await res.json();
-      console.log(data)
-      setResponse(data);
+      setResponse(data.data);
     } catch (err) {
-      setError('Invalid JSON input');
+      console.error('Error:', err);
+      setError('An unexpected error occurred');
     }
   };
 
