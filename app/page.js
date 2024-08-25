@@ -16,7 +16,7 @@ export default function Home() {
       const parsedInput = JSON.parse(jsonInput);
 
       // Call your REST API using fetch
-      const res = await fetch(`${NEXT_PUBLIC_HOST}/api/user`, {
+      const res = await fetch(`/api/user`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -29,6 +29,7 @@ export default function Home() {
       }
 
       const data = await res.json();
+      console.log(data)
       setResponse(data);
     } catch (err) {
       setError('Invalid JSON input');
