@@ -1,5 +1,5 @@
 import connect from '@/lib/db'; // Import your database connection function
-import ResponseModel from '@/models/response'; // Ensure consistency in naming
+import User from '@/model/User'; // Ensure consistency in naming
 
 export default async function handler(req, res) {
     await connect(); // Connect to MongoDB
@@ -9,7 +9,7 @@ export default async function handler(req, res) {
     switch (method) {
         case 'GET':
             try {
-                const responses = await ResponseModel.find({}); // Fetch all responses
+                const responses = await User.find({}); // Fetch all responses
                 res.status(200).json({ success: true, data: responses });
             } catch (error) {
                 res.status(400).json({ success: false, error: error.message });
@@ -20,7 +20,8 @@ export default async function handler(req, res) {
             try {
                 const { data } = req.body; // Extract data from body
 
-                const newResponse = new ResponseModel({ data }); // Create a new document
+                const newResponse = new User.create({ data
+                 }); // Create a new document
 
                 await newResponse.save(); // Save the document
                 res.status(201).json({ success: true, data });

@@ -13,14 +13,14 @@ export default function Home() {
 
     try {
 
-      const parsedInput = JSON.parse(jsonInput);
+      // const parsedInput = JSON.parse(jsonInput);
       // Call your REST API using fetch
-      const res = await fetch(`/api/user`, {
+      const res = await fetch(`/api/users`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ data: parsedInput }), // Correct body format
+        body: JSON.stringify({ data: jsonInput }), // Correct body format
       });
 
       if (!res.ok) {
@@ -30,7 +30,7 @@ export default function Home() {
       }
 
       const data = await res.json();
-      setResponse(data.data);
+      setResponse(data);
     } catch (err) {
       console.error('Error:', err);
       setError('An unexpected error occurred');
